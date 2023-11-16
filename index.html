@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="code.js"></script>
+</head>
+<body>
+
+    <div class="calcBody">
+        <div class="results">
+          <div id="tempExpression">0</div>
+          <div id="expression"></div>
+        </div>
+        <div class="led" id="led">M</div>
+        <div class="switches">
+          <div class="mem">
+           
+          </div>
+          <div class="rbtn">
+            <label for="0">.0</label><input type="radio" name="elem" value="0" >
+            <label for="0">.2</label><input type="radio" name="elem" value="2" >
+            <label for="0">.4</label><input type="radio" name="elem" value="4">
+            <label for="0">F</label><input type="radio" name="elem" value="99" checked>
+          </div>
+        </div>
+        <div class="control">
+          <button id="eraseM">MC</button>
+          <button id="plusM">M+</button>
+          <button id="minusM">M-</button>
+          <button id="del">CE</button>
+          <button id="clear">C</button>
+        </div>
+        <div class="input">
+         
+          <div class="nums">
+              <button class="num" id="b7">7</button>
+            <button class="num" id="b8">8</button>
+            <button class="num" id="b9">9</button>
+            
+            <button class="num" id="b4">4</button>
+            <button class="num" id="b5">5</button>
+            <button class="num" id="b6">6</button>
+            
+            <button class="num" id="b1">1</button>
+            <button class="num" id="b2">2</button>
+            <button class="num" id="b3">3</button>
+            
+            <button class="num dblw" id="0" >0</button>
+            <button  id=".">.</button>
+          </div>
+          
+          <div class="signs">
+            <button class="sign dblh" id="-">-</button>
+            <button class="sign dblh" id="+">+</button>
+            <button class="sign" id="*">×</button>
+            <button class="sign" id="/">÷</button>
+            <button class="equ dblh" id="=">=</button>
+          </div>
+        </div>
+      </div>    
+
+</body>
+</html>
