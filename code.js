@@ -4,6 +4,8 @@ let tempExpString = "";
 let tmpExString = "";
 let lastChar = "";
 let memory = "0";
+let lastPlace = 0;
+let calcString = "";
   let prec = 0;
   // let calcOut = "";
   const teField = document.getElementById('tempExpression');
@@ -55,8 +57,8 @@ for (i=0; i< numClick.length; i++)
     signClick[i].onclick = function() {
   // действие только после цифры
       signChar = this.innerHTML;
-      console.log(lastChar);
-      console.log(signChar);
+      // console.log(lastChar);
+      // console.log(signChar);
       if (((lastChar >=0) && (lastChar <=9)) |
       (((lastChar == "×") | (lastChar == "÷")) & (signChar == "-"))) { 
       lastChar = this.innerHTML;
@@ -201,9 +203,9 @@ function calcFunc() {
         }
       }
       if (prec =="99") {
-        tmpExString = " " +  eval(outExpString);
+        tmpExString = " " +  myEval(outExpString);
       } else {
-        tmpExString = " " + eval(outExpString).toFixed(prec);
+        tmpExString = " " + myEval(outExpString).toFixed(prec); //  ?????????????
       }
     
       if ((tmpExString.length>0) && (440/tmpExString.length) > 50) {
@@ -213,4 +215,68 @@ function calcFunc() {
       }
       exField.textContent = tmpExString;
   }    
+}
+function myEval(calcStr) {
+  // console.log("cs1- " + calcStr);
+  let rez = 0;
+  rezStr = "";
+   
+  signPl = 0;
+
+
+
+  while ( calcStr.length > rezStr.length ) {
+    // console.log(calcStr.length + "-======" + rezStr.length);
+  
+    lastPl = 0;
+  signPl = findSign(calcStr, lastPl); // место первого знака
+  Num1 = Number(calcStr.substring(lastPl, signPl)); // первое число
+
+
+  signCheck = calcStr.substring(signPl, signPl + 1); // первый знак
+  lastPl = signPl + 1;
+  signPl = findSign(calcStr, lastPl); //место следущего знака
+  if (signPl == 99999) {signPl = calcStr.length}
+  Num2 = Number(calcStr.substring(lastPl, signPl)); // второе число
+
+
+  if (signCheck == "-") {rez = Num1 - Num2};
+  if (signCheck == "+") {rez = Num1 + Num2};
+  if (signCheck == "*") {rez = Num1 * Num2};
+  if (signCheck == "/") {rez = Num1 / Num2};
+
+
+  // if (signPl == calcStr.length) {}
+
+  rezStr = String(rez);
+
+ 
+
+
+  calcStr = rezStr + calcStr.substring(signPl, calcStr.length);
+
+
+}
+console.log("----------");
+return (Number(rez));
+  
+
+ // Number()
+
+}
+function findSign(calcString, lastPlace) {
+  signPlace = 99999;
+  // console.log(calcString);
+  // console.log(lastPlace);
+
+  Check = calcString.indexOf("-", lastPlace);
+  if ((Check != -1) && (signPlace > Check)) {signPlace = Check}
+  Check = calcString.indexOf("+", lastPlace);
+  if ((Check != -1) && (signPlace > Check)) {signPlace = Check}
+  Check = calcString.indexOf("*", lastPlace);
+  if ((Check != -1) && (signPlace > Check)) {signPlace = Check}
+  Check = calcString.indexOf("/", lastPlace);
+  if ((Check != -1) && (signPlace > Check)) {signPlace = Check}
+  return signPlace;
+  
 }
