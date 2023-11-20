@@ -28,17 +28,19 @@ let calcString = "";
   let fSign = false; // флаг наличия знака операции в выражении
   let fPoint = false; // наличие точки
   let fMem = false; // двойное нажатие
+  // let fZero = false; // первый ноль уже есть
 
-// числовой набор и дес.знак
+// числовой набор - первые ноли - ? нах
 for (i=0; i< numClick.length; i++)
-    numClick[i].onclick = function() {
+    numClick[i].onclick = function() {  // первый символ не ноль
+	if ((this.innerHTML != "0") | ((this.innerHTML == "0") & ((lastChar == ".") || ((lastChar >= 0) && (lastChar <= 9))) & (lastChar != ""))) {
     lastChar = this.innerHTML;
     tempExpString = tempExpString + lastChar;
     teField.textContent  = tempExpString;
     fMem = false;
     chkSize();
     calcFunc();
-
+	}
   }
 // десятичная точка
   pointClick.addEventListener('click', function() {
@@ -57,10 +59,7 @@ for (i=0; i< numClick.length; i++)
     signClick[i].onclick = function() {
   // действие только после цифры
       signChar = this.innerHTML;
-      // console.log(lastChar);
-      // console.log(signChar);
-      if (((lastChar >=0) && (lastChar <=9)) |
-      (((lastChar == "×") | (lastChar == "÷")) & (signChar == "-"))) { 
+      if (((lastChar >=0) && (lastChar <=9)) | (((lastChar == "×") | (lastChar == "÷")) & (signChar == "-"))) { // 
       lastChar = this.innerHTML;
       tempExpString = tempExpString + lastChar;
       teField.textContent  = tempExpString;
@@ -95,7 +94,7 @@ for (i=0; i< numClick.length; i++)
 clearClick.addEventListener('click', function() {
   tempExpString = "";
   lastChar = "";
-  teField.textContent  = "0";
+  teField.textContent  = "";
   exField.textContent  = "";
   exFildSize.style.fontSize = 50 + 'pt';
   teFildSize.style.fontSize = 50 + 'pt';
@@ -120,11 +119,11 @@ finalClick.addEventListener('click', function() {
 // вывод из памяти и очистка
         
 mcClick.addEventListener('click', function() {
-  if (fMem) {
-    memory = "0";
+  if (fMem) { // второй клик - стираем
+    memory = "";
     fMem = false;
     pLed.style.visibility = "hidden";
-  } else {
+  } else {    // первый клик - вывод
     fMem = true;
     tempExpString =  "" + memory;
     teField.textContent =  "" + memory;
@@ -205,7 +204,7 @@ function calcFunc() {
       if (prec =="99") {
         tmpExString = " " +  myEval(outExpString);
       } else {
-        tmpExString = " " + myEval(outExpString).toFixed(prec); //  ?????????????
+        tmpExString = " " + myEval(outExpString).toFixed(prec); 
       }
     
       if ((tmpExString.length>0) && (440/tmpExString.length) > 50) {
@@ -216,59 +215,34 @@ function calcFunc() {
       exField.textContent = tmpExString;
   }    
 }
+
 function myEval(calcStr) {
-  // console.log("cs1- " + calcStr);
   let rez = 0;
   rezStr = "";
-   
   signPl = 0;
-
-
-
   while ( calcStr.length > rezStr.length ) {
-    // console.log(calcStr.length + "-======" + rezStr.length);
   
-    lastPl = 0;
+  lastPl = 0;
   signPl = findSign(calcStr, lastPl); // место первого знака
   Num1 = Number(calcStr.substring(lastPl, signPl)); // первое число
-
-
   signCheck = calcStr.substring(signPl, signPl + 1); // первый знак
   lastPl = signPl + 1;
   signPl = findSign(calcStr, lastPl); //место следущего знака
   if (signPl == 99999) {signPl = calcStr.length}
   Num2 = Number(calcStr.substring(lastPl, signPl)); // второе число
 
-
   if (signCheck == "-") {rez = Num1 - Num2};
   if (signCheck == "+") {rez = Num1 + Num2};
   if (signCheck == "*") {rez = Num1 * Num2};
   if (signCheck == "/") {rez = Num1 / Num2};
-
-
-  // if (signPl == calcStr.length) {}
-
   rezStr = String(rez);
-
- 
-
-
   calcStr = rezStr + calcStr.substring(signPl, calcStr.length);
-
-
 }
-console.log("----------");
 return (Number(rez));
-  
-
- // Number()
-
 }
-function findSign(calcString, lastPlace) {
-  signPlace = 99999;
-  // console.log(calcString);
-  // console.log(lastPlace);
 
+function findSign(calcString, lastPlace) {  // ищем знак действия
+  signPlace = 99999;
   Check = calcString.indexOf("-", lastPlace);
   if ((Check != -1) && (signPlace > Check)) {signPlace = Check}
   Check = calcString.indexOf("+", lastPlace);
