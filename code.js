@@ -236,8 +236,13 @@ function myEval(calcStr) {
   if (signCheck == "*") {rez = Num1 * Num2};
   if (signCheck == "/") {rez = Num1 / Num2};
   rezStr = String(rez);
+  if (rezStr.includes("e")) {
+    alert ("Переполнение ! Операция будет сброшена!"); // костыль )))
+    return ("");
+  }
   calcStr = rezStr + calcStr.substring(signPl, calcStr.length);
 }
+
 return (Number(rez));
 }
 
